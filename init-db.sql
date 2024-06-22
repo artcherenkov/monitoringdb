@@ -24,7 +24,8 @@ CREATE TABLE settings (
 CREATE TABLE cameras (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
-  location VARCHAR(255) NOT NULL
+  location VARCHAR(255) NOT NULL,
+  imageUrl VARCHAR(255) NOT NULL
 );
 
 -- Процедуры для работы с таблицей users
@@ -78,14 +79,14 @@ BEGIN
 END //
 
 -- Процедуры для работы с таблицей cameras
-CREATE PROCEDURE add_camera(IN p_name VARCHAR(50), IN p_location VARCHAR(255))
+CREATE PROCEDURE add_camera(IN p_name VARCHAR(50), IN p_location VARCHAR(255), IN p_imageUrl VARCHAR(255))
 BEGIN
-  INSERT INTO cameras (name, location) VALUES (p_name, p_location);
+  INSERT INTO cameras (name, location, imageUrl) VALUES (p_name, p_location, p_imageUrl);
 END //
 
-CREATE PROCEDURE update_camera(IN p_id INT, IN p_name VARCHAR(50), IN p_location VARCHAR(255))
+CREATE PROCEDURE update_camera(IN p_id INT, IN p_name VARCHAR(50), IN p_location VARCHAR(255), IN p_imageUrl VARCHAR(255))
 BEGIN
-  UPDATE cameras SET name = p_name, location = p_location WHERE id = p_id;
+  UPDATE cameras SET name = p_name, location = p_location, imageUrl = p_imageUrl WHERE id = p_id;
 END //
 
 CREATE PROCEDURE delete_camera(IN p_id INT)
