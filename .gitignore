@@ -3,3 +3,4 @@ backend/node_modules
 .idea
 .DS_Store
 frontend/dist
+backend/.env
