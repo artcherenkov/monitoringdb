@@ -36,3 +36,7 @@ const fetchWithToken = async (url, options = {}) => {
 export const getEvents = async () => {
   return fetchWithToken(`${API_URL}/events`);
 };
+
+export const getCameras = async () => {
+  return fetchWithToken(`${API_URL}/cameras`);
+};

@@ -1,4 +1,5 @@
 const Camera = require('../models/cameraModel');
+const { getUnsplashImage } = require('../utils/unsplash');
 
 const cameraController = {
   getAllCameras: async (req, res) => {
@@ -22,7 +23,8 @@ const cameraController = {
   },
   createCamera: async (req, res) => {
     try {
-      const { name, location, imageUrl } = req.body;
+      const { name, location } = req.body;
+      const imageUrl = await getUnsplashImage(location);  // Получаем стоковое изображение
       const result = await Camera.create(name, location, imageUrl);
       res.status(201).json(result);
     } catch (error) {
@@ -31,7 +33,8 @@ const cameraController = {
   },
   updateCamera: async (req, res) => {
     try {
-      const { name, location, imageUrl } = req.body;
+      const { name, location } = req.body;
+      const imageUrl = await getUnsplashImage(location);  // Получаем стоковое изображение
       const result = await Camera.update(req.params.id, name, location, imageUrl);
       res.json(result);
     } catch (error) {
