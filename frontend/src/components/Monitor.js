@@ -46,7 +46,7 @@ class Monitor {
       <span class="monitor__event-level">${this.getEmojiForLevel(event.eventLevel)}</span>
       <span class="monitor__event-comment">${event.comment}</span>
     `;
-    setTimeout(() => eventElement.classList.add('show'), 0); // Trigger animation
+    setTimeout(() => eventElement.classList.add('show'), 50); // Задержка перед добавлением анимации
     return eventElement;
   }
 
@@ -66,15 +66,6 @@ class Monitor {
         const eventElement = this.createEventElement(event);
         eventsContainer.prepend(eventElement);
         this.eventsCache[event.id] = event;
-      }
-    });
-
-    // Remove old events that are not in the newEvents array
-    Object.keys(this.eventsCache).forEach(id => {
-      if (!newEvents.find(event => event.id == id)) {
-        const eventElement = eventsContainer.querySelector(`[data-id="${id}"]`);
-        eventElement.remove();
-        delete this.eventsCache[id];
       }
     });
   }
