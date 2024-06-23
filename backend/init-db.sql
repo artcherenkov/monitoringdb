@@ -33,7 +33,8 @@ DELIMITER //
 -- Процедуры для работы с таблицей users
 CREATE PROCEDURE add_user(IN p_login VARCHAR(50), IN p_password VARCHAR(255), IN p_rights VARCHAR(50))
 BEGIN
-  INSERT INTO users (login, password, rights) VALUES (p_login, SHA2(p_password, 256), p_rights);
+  INSERT INTO users (login, password, rights) VALUES (p_login, p_password, p_rights);
+  SELECT LAST_INSERT_ID() AS id;
 END //
 
 CREATE PROCEDURE update_user(IN p_id INT, IN p_login VARCHAR(50), IN p_password VARCHAR(255), IN p_rights VARCHAR(50))
@@ -50,6 +51,7 @@ END //
 CREATE PROCEDURE add_event(IN p_event_level VARCHAR(50), IN p_comment TEXT)
 BEGIN
   INSERT INTO events (event_level, comment) VALUES (p_event_level, p_comment);
+  SELECT LAST_INSERT_ID() AS id;
 END //
 
 CREATE PROCEDURE update_event(IN p_id INT, IN p_event_level VARCHAR(50), IN p_comment TEXT)
@@ -66,6 +68,7 @@ END //
 CREATE PROCEDURE add_setting(IN p_param VARCHAR(50), IN p_value VARCHAR(255))
 BEGIN
   INSERT INTO settings (param, value) VALUES (p_param, p_value);
+  SELECT LAST_INSERT_ID() AS id;
 END //
 
 CREATE PROCEDURE update_setting(IN p_id INT, IN p_param VARCHAR(50), IN p_value VARCHAR(255))
@@ -82,6 +85,7 @@ END //
 CREATE PROCEDURE add_camera(IN p_name VARCHAR(50), IN p_location VARCHAR(255), IN p_imageUrl VARCHAR(255))
 BEGIN
   INSERT INTO cameras (name, location, imageUrl) VALUES (p_name, p_location, p_imageUrl);
+  SELECT LAST_INSERT_ID() AS id;
 END //
 
 CREATE PROCEDURE update_camera(IN p_id INT, IN p_name VARCHAR(50), IN p_location VARCHAR(255), IN p_imageUrl VARCHAR(255))

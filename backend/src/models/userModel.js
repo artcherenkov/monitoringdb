@@ -13,10 +13,6 @@ const User = {
     const [rows] = await db.query('SELECT id, login, rights FROM users WHERE id = ?', [id]);
     return rows[0];
   },
-  findByLogin: async (login) => {
-    const [rows] = await db.query('SELECT * FROM users WHERE login = ?', [login]);
-    return rows[0];
-  },
   update: async (id, login, password, rights) => {
     await db.query('CALL update_user(?, ?, ?, ?)', [id, login, password, rights]);
     return { id, login, rights };
