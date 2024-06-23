@@ -111,3 +111,27 @@ export const stopBloodyHell = async () => {
     method: 'POST',
   });
 };
+
+export const getSettings = async () => {
+  return fetchWithToken(`${API_URL}/settings`);
+};
+
+export const createSetting = async (setting) => {
+  return fetchWithToken(`${API_URL}/settings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(setting),
+  });
+};
+
+export const updateSetting = async (id, setting) => {
+  return fetchWithToken(`${API_URL}/settings/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(setting),
+  });
+};
