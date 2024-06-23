@@ -8,6 +8,7 @@ const settingsRoutes = require('./routes/settingsRoutes');
 const cameraRoutes = require('./routes/cameraRoutes');
 const authRoutes = require('./routes/authRoutes');
 const authMiddleware = require('./middlewares/authMiddleware');
+const bloodyHellRoutes = require('./routes/bloodyHellRoutes');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/cameras', cameraRoutes);
+app.use('/api/bloody-hell', bloodyHellRoutes);
 
 // Обработчик ошибок
 app.use((err, req, res, next) => {

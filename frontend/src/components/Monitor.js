@@ -1,5 +1,4 @@
-import { getEvents } from '../utils/api';
-import eventBus from '../utils/eventBus';
+import { getEvents, startBloodyHell, stopBloodyHell } from '../utils/api';
 import '../assets/styles/monitor.css';
 
 class Monitor {
@@ -23,13 +22,45 @@ class Monitor {
     }
   }
 
+  getEmojiForLevel(level) {
+    switch (level) {
+      case 'low':
+        return '✅ Low';
+      case 'medium':
+        return '⚠️ Medium';
+      case 'high':
+        return '🔥 High';
+      case 'critical':
+        return '💀 Critical';
+      default:
+        return level;
+    }
+  }
+
   updateEvents(events) {
-    this.element.innerHTML = events.map(event => `
-      <div class="monitor__event">
-        <span class="monitor__event-level">${event.event_level}</span>
-        <span class="monitor__event-comment">${event.comment}</span>
+    this.element.innerHTML = `
+      <div class="monitor__controls">
+        <button id="start-bloody-hell">Start Bloody Hell</button>
+        <button id="stop-bloody-hell">Stop Bloody Hell</button>
       </div>
-    `).join('');
+      ${events.map(event => `
+        <div class="monitor__event">
+          <span class="monitor__event-level">${this.getEmojiForLevel(event.eventLevel)}</span>
+          <span class="monitor__event-comment">${event.comment}</span>
+        </div>
+      `).join('')}
+    `;
+
+    this.element.querySelector('#start-bloody-hell').addEventListener('click', this.handleStartBloodyHell.bind(this));
+    this.element.querySelector('#stop-bloody-hell').addEventListener('click', this.handleStopBloodyHell.bind(this));
+  }
+
+  async handleStartBloodyHell() {
+    await startBloodyHell();
+  }
+
+  async handleStopBloodyHell() {
+    await stopBloodyHell();
   }
 
   render() {

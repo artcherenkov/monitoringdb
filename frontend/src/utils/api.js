@@ -90,3 +90,15 @@ export const deleteCamera = async (id) => {
     method: 'DELETE',
   });
 };
+
+export const startBloodyHell = async () => {
+  return fetchWithToken(`${API_URL}/bloody-hell/start`, {
+    method: 'POST',
+  });
+};
+
+export const stopBloodyHell = async () => {
+  return fetchWithToken(`${API_URL}/bloody-hell/stop`, {
+    method: 'POST',
+  });
+};
