@@ -7,6 +7,7 @@ class Monitor {
     this.element.id = 'monitor';
     this.pollInterval = pollInterval;
     this.polling = null;
+    this.eventsCache = {};
     this.render();
     this.pollEvents();
   }
@@ -37,22 +38,45 @@ class Monitor {
     }
   }
 
-  updateEvents(events) {
-    this.element.innerHTML = `
-      <div class="monitor__controls">
-        <button id="start-bloody-hell">Start Bloody Hell</button>
-        <button id="stop-bloody-hell">Stop Bloody Hell</button>
-      </div>
-      ${events.map(event => `
-        <div class="monitor__event">
-          <span class="monitor__event-level">${this.getEmojiForLevel(event.eventLevel)}</span>
-          <span class="monitor__event-comment">${event.comment}</span>
-        </div>
-      `).join('')}
+  createEventElement(event) {
+    const eventElement = document.createElement('div');
+    eventElement.classList.add('monitor__event');
+    eventElement.dataset.id = event.id;
+    eventElement.innerHTML = `
+      <span class="monitor__event-level">${this.getEmojiForLevel(event.eventLevel)}</span>
+      <span class="monitor__event-comment">${event.comment}</span>
     `;
+    setTimeout(() => eventElement.classList.add('show'), 0); // Trigger animation
+    return eventElement;
+  }
 
-    this.element.querySelector('#start-bloody-hell').addEventListener('click', this.handleStartBloodyHell.bind(this));
-    this.element.querySelector('#stop-bloody-hell').addEventListener('click', this.handleStopBloodyHell.bind(this));
+  updateEvents(newEvents) {
+    const eventsContainer = this.element.querySelector('.monitor__events-container');
+
+    newEvents.forEach(event => {
+      if (this.eventsCache[event.id]) {
+        const cachedEvent = this.eventsCache[event.id];
+        if (cachedEvent.eventLevel !== event.eventLevel || cachedEvent.comment !== event.comment) {
+          const eventElement = eventsContainer.querySelector(`[data-id="${event.id}"]`);
+          eventElement.querySelector('.monitor__event-level').textContent = this.getEmojiForLevel(event.eventLevel);
+          eventElement.querySelector('.monitor__event-comment').textContent = event.comment;
+          Object.assign(this.eventsCache[event.id], event);
+        }
+      } else {
+        const eventElement = this.createEventElement(event);
+        eventsContainer.prepend(eventElement);
+        this.eventsCache[event.id] = event;
+      }
+    });
+
+    // Remove old events that are not in the newEvents array
+    Object.keys(this.eventsCache).forEach(id => {
+      if (!newEvents.find(event => event.id == id)) {
+        const eventElement = eventsContainer.querySelector(`[data-id="${id}"]`);
+        eventElement.remove();
+        delete this.eventsCache[id];
+      }
+    });
   }
 
   async handleStartBloodyHell() {
@@ -64,7 +88,16 @@ class Monitor {
   }
 
   render() {
-    this.element.innerHTML = '<div id="monitor-loading">Loading...</div>';
+    this.element.innerHTML = `
+      <div class="monitor__controls">
+        <button id="start-bloody-hell">Start Bloody Hell</button>
+        <button id="stop-bloody-hell">Stop Bloody Hell</button>
+      </div>
+      <div class="monitor__events-container"></div>
+    `;
+
+    this.element.querySelector('#start-bloody-hell').addEventListener('click', this.handleStartBloodyHell.bind(this));
+    this.element.querySelector('#stop-bloody-hell').addEventListener('click', this.handleStopBloodyHell.bind(this));
   }
 
   getElement() {

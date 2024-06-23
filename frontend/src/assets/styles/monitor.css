@@ -36,6 +36,14 @@
   margin-bottom: 10px;
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.monitor__event.show {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .monitor__event-level {
