@@ -6,6 +6,7 @@ class Camera {
     this.element = document.createElement('div');
     this.element.id = 'camera';
     this.pollInterval = pollInterval;
+    this.polling = null;
     this.render();
     this.pollCameras();
   }
@@ -14,10 +15,10 @@ class Camera {
     try {
       const cameras = await getCameras();
       this.updateCameras(cameras);
-      setTimeout(() => this.pollCameras(), this.pollInterval);
+      this.polling = setTimeout(() => this.pollCameras(), this.pollInterval);
     } catch (error) {
       console.error('Error fetching cameras:', error);
-      setTimeout(() => this.pollCameras(), this.pollInterval);
+      this.polling = setTimeout(() => this.pollCameras(), this.pollInterval);
     }
   }
 
@@ -37,6 +38,12 @@ class Camera {
 
   getElement() {
     return this.element;
+  }
+
+  stopPolling() {
+    if (this.polling) {
+      clearTimeout(this.polling);
+    }
   }
 }
 

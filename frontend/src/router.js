@@ -2,7 +2,7 @@ class Router {
   constructor() {
     this.routes = {};
     this.currentRoute = null;
-    window.addEventListener('hashchange', this.handleRouteChange.bind(this));
+    window.addEventListener('popstate', this.handleRouteChange.bind(this));
   }
 
   addRoute(path, handler) {
@@ -10,7 +10,7 @@ class Router {
   }
 
   handleRouteChange() {
-    const path = window.location.hash.slice(1) || '/';
+    const path = window.location.pathname;
     this.navigate(path);
   }
 
@@ -18,9 +18,14 @@ class Router {
     if (this.routes[path]) {
       this.routes[path]();
       this.currentRoute = path;
+      window.history.pushState({}, path, window.location.origin + path);
     } else {
       console.error(`No route found for path: ${path}`);
     }
+  }
+
+  getCurrentPath() {
+    return window.location.pathname;
   }
 }
 

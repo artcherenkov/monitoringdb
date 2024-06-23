@@ -8,6 +8,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
+    publicPath: '/',  // Обновляем publicPath для поддержки History API
   },
   module: {
     rules: [
@@ -28,8 +29,11 @@ module.exports = {
     }),
   ],
   devServer: {
-    static: path.join(__dirname, 'dist'),
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
     compress: true,
     port: 9000,
+    historyApiFallback: true,  // Добавляем historyApiFallback для поддержки History API
   },
 };

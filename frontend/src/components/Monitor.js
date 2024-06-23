@@ -7,6 +7,7 @@ class Monitor {
     this.element = document.createElement('div');
     this.element.id = 'monitor';
     this.pollInterval = pollInterval;
+    this.polling = null;
     this.render();
     this.pollEvents();
   }
@@ -15,10 +16,10 @@ class Monitor {
     try {
       const events = await getEvents();
       this.updateEvents(events);
-      setTimeout(() => this.pollEvents(), this.pollInterval);
+      this.polling = setTimeout(() => this.pollEvents(), this.pollInterval);
     } catch (error) {
       console.error('Error fetching events:', error);
-      setTimeout(() => this.pollEvents(), this.pollInterval);
+      this.polling = setTimeout(() => this.pollEvents(), this.pollInterval);
     }
   }
 
@@ -37,6 +38,12 @@ class Monitor {
 
   getElement() {
     return this.element;
+  }
+
+  stopPolling() {
+    if (this.polling) {
+      clearTimeout(this.polling);
+    }
   }
 }
 
