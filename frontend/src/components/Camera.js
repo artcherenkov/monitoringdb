@@ -48,11 +48,11 @@ class Camera {
   openAddCameraPopup() {
     const content = `
       <label>
-        Name:
+        <span>Name:</span>
         <input type="text" id="camera-name" required />
       </label>
       <label>
-        Location:
+      <span>Location:</span>
         <input type="text" id="camera-location" required />
       </label>
     `;

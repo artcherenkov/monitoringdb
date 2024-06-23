@@ -41,13 +41,23 @@
 
 .popup__form label {
   margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.popup__form input {
+.popup__form label span {
+  flex-shrink: 0;
+  width: 100px;
+}
+
+.popup__form input, .popup__form select {
   padding: 10px;
-  margin-bottom: 20px;
+  margin-left: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  width: 100%;
+  flex-grow: 1;
 }
 
 .popup__submit {
@@ -57,6 +67,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .popup__submit:hover {

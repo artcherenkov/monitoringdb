@@ -22,7 +22,7 @@
   background-color: #f2f2f2;
 }
 
-.users__edit, .users__delete {
+.users__edit, .users__delete, .users__add {
   margin-right: 5px;
   padding: 5px 10px;
   border: none;
@@ -40,30 +40,12 @@
   color: white;
 }
 
-#users-form {
-  display: flex;
-  flex-direction: column;
-}
-
-#users-form label {
-  margin-bottom: 10px;
-}
-
-#user-login, #user-password, #user-rights {
-  margin-left: 10px;
-  padding: 5px;
-  width: 200px;
-}
-
-#users-submit {
-  padding: 10px;
+.users__add {
   background-color: #007BFF;
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  margin-bottom: 20px;
 }
 
-#users-submit:hover {
+.users__add:hover {
   background-color: #0056b3;
 }

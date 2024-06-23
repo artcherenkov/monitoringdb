@@ -1,4 +1,5 @@
 import { getUsers, createUser, updateUser, deleteUser, getUserById } from '../utils/api';
+import Popup from './Popup';
 import '../assets/styles/users.css';
 
 class Users {
@@ -21,6 +22,7 @@ class Users {
   updateUsers(users) {
     this.element.innerHTML = `
       <h2>Users</h2>
+      <button id="add-user-button" class="users__add">Add New User</button>
       <table class="users__table">
         <thead>
           <tr>
@@ -44,67 +46,89 @@ class Users {
           `).join('')}
         </tbody>
       </table>
-      <form id="users-form">
-        <input type="hidden" id="user-id" />
-        <label>
-          New Login:
-          <input type="text" id="user-login" required />
-        </label>
-        <label>
-          New Password:
-          <input type="password" id="user-password" required />
-        </label>
-        <label>
-          New Role:
-          <select id="user-rights" required>
-            <option value="admin">Admin</option>
-            <option value="user">User</option>
-          </select>
-        </label>
-        <button type="submit" id="users-submit">Save</button>
-      </form>
     `;
 
+    this.element.querySelector('#add-user-button').addEventListener('click', this.openAddUserPopup.bind(this));
     this.element.querySelectorAll('.users__edit').forEach(button => {
-      button.addEventListener('click', this.handleEdit.bind(this));
+      button.addEventListener('click', this.openEditUserPopup.bind(this));
     });
 
     this.element.querySelectorAll('.users__delete').forEach(button => {
-      button.addEventListener('click', this.handleDelete.bind(this));
+      button.addEventListener('click', this.handleDeleteUser.bind(this));
     });
-
-    this.element.querySelector('#users-form').addEventListener('submit', this.handleSubmit.bind(this));
   }
 
-  async handleEdit(event) {
-    const userId = event.target.dataset.id;
-    const user = await getUserById(userId);
-    this.element.querySelector('#user-id').value = user.id;
-    this.element.querySelector('#user-login').value = user.login;
-    this.element.querySelector('#user-password').value = '';
-    this.element.querySelector('#user-rights').value = user.rights;
+  openAddUserPopup() {
+    const content = `
+      <label>
+        <span>New Login:</span>
+        <input type="text" id="user-login" required />
+      </label>
+      <label>
+        <span>New Password:</span>
+        <input type="password" id="user-password" required />
+      </label>
+      <label>
+        <span>New Role:</span>
+        <select id="user-rights" required>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
+      </label>
+    `;
+
+    new Popup('Add User', content, this.handleAddUserSubmit.bind(this));
   }
 
-  async handleDelete(event) {
+  openEditUserPopup(event) {
     const userId = event.target.dataset.id;
-    await deleteUser(userId);
+
+    getUserById(userId).then(user => {
+      const content = `
+        <input type="hidden" id="user-id" value="${user.id}" />
+        <label>
+          <span>Login:</span>
+          <input type="text" id="user-login" value="${user.login}" required />
+        </label>
+        <label>
+          <span>Password:</span>
+          <input type="password" id="user-password" required />
+        </label>
+        <label>
+          <span>Role:</span>
+          <select id="user-rights" required>
+            <option value="admin" ${user.rights === 'admin' ? 'selected' : ''}>Admin</option>
+            <option value="user" ${user.rights === 'user' ? 'selected' : ''}>User</option>
+          </select>
+        </label>
+      `;
+
+      new Popup('Edit User', content, this.handleEditUserSubmit.bind(this));
+    });
+  }
+
+  async handleAddUserSubmit(event) {
+    event.preventDefault();
+    const login = document.querySelector('#user-login').value;
+    const password = document.querySelector('#user-password').value;
+    const rights = document.querySelector('#user-rights').value;
+    await createUser({ login, password, rights });
     this.fetchUsers();
   }
 
-  async handleSubmit(event) {
+  async handleEditUserSubmit(event) {
     event.preventDefault();
-    const id = this.element.querySelector('#user-id').value;
-    const login = this.element.querySelector('#user-login').value;
-    const password = this.element.querySelector('#user-password').value;
-    const rights = this.element.querySelector('#user-rights').value;
+    const id = document.querySelector('#user-id').value;
+    const login = document.querySelector('#user-login').value;
+    const password = document.querySelector('#user-password').value;
+    const rights = document.querySelector('#user-rights').value;
+    await updateUser(id, { login, password, rights });
+    this.fetchUsers();
+  }
 
-    if (id) {
-      await updateUser(id, { login, password, rights });
-    } else {
-      await createUser({ login, password, rights });
-    }
-
-    this.element.querySelector('#users-form').reset();
+  async handleDeleteUser(event) {
+    const userId = event.target.dataset.id;
+    await deleteUser(userId);
     this.fetchUsers();
   }
 
