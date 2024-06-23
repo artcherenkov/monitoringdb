@@ -22,6 +22,15 @@ export const checkAuth = async () => {
   return response.ok;
 };
 
+export const logout = async () => {
+  const response = await fetch(`${API_URL}/auth/logout`, {
+    method: 'POST',
+    credentials: 'include',  // Включаем куки в запрос
+  });
+
+  return response.json();
+};
+
 const fetchWithToken = async (url, options = {}) => {
   if (!options.headers) {
     options.headers = {};

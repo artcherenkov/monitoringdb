@@ -2,8 +2,8 @@
   background-color: #f8f9fa;
   padding: 10px;
   display: flex;
-  justify-content: space-around;
   border-bottom: 1px solid #ddd;
+  gap: 16px;
 }
 
 #nav button {
@@ -17,4 +17,9 @@
 
 #nav button:hover {
   background-color: #0056b3;
+}
+
+#nav #logout-button {
+  background-color: #ff4c4c;
+  margin-left: auto;
 }

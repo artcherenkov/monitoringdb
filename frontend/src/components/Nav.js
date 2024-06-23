@@ -1,4 +1,5 @@
 import eventBus from '../utils/eventBus';
+import { logout } from '../utils/api';
 import '../assets/styles/nav.css';
 
 class Nav {
@@ -8,12 +9,20 @@ class Nav {
     this.render();
   }
 
+  handleLogout() {
+    logout().then(() => {
+      localStorage.removeItem('token');
+      eventBus.emit('navigate', '/auth');
+    });
+  }
+
   render() {
     this.element.innerHTML = `
       <button id="nav-dashboard">Dashboard</button>
       <button id="nav-cameras">Cameras</button>
       <button id="nav-settings">Settings</button>
       <button id="nav-users">Users</button>
+      <button id="logout-button">Logout</button>
     `;
 
     this.element.querySelector('#nav-dashboard').addEventListener('click', () => {
@@ -31,6 +40,8 @@ class Nav {
     this.element.querySelector('#nav-users').addEventListener('click', () => {
       eventBus.emit('navigate', '/users');
     });
+
+    this.element.querySelector('#logout-button').addEventListener('click', this.handleLogout.bind(this));
   }
 
   getElement() {
