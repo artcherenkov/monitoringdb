@@ -3,6 +3,7 @@ import Auth from './components/Auth';
 import Monitor from './components/Monitor';
 import Camera from './components/Camera';
 import Settings from './components/Settings';
+import Users from './components/Users';
 import Nav from './components/Nav';
 import eventBus from './utils/eventBus';
 import { checkAuth } from './utils/api';  // Импорт функции для проверки авторизации
@@ -21,6 +22,7 @@ class App {
     this.router.addRoute('/cameras', () => this.renderComponent(new Camera(this.pollInterval)));
     this.router.addRoute('/settings', () => this.renderComponent(new Settings()));
     this.router.addRoute('/auth', () => this.renderComponent(new Auth()));
+    this.router.addRoute('/users', () => this.renderComponent(new Users()));
   }
 
   initEventListeners() {

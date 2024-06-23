@@ -40,3 +40,37 @@ export const getEvents = async () => {
 export const getCameras = async () => {
   return fetchWithToken(`${API_URL}/cameras`);
 };
+
+export const getUsers = async () => {
+  return fetchWithToken(`${API_URL}/users`);
+};
+
+export const getUserById = async (id) => {
+  return fetchWithToken(`${API_URL}/users/${id}`);
+};
+
+export const createUser = async (user) => {
+  return fetchWithToken(`${API_URL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  });
+};
+
+export const updateUser = async (id, user) => {
+  return fetchWithToken(`${API_URL}/users/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  });
+};
+
+export const deleteUser = async (id) => {
+  return fetchWithToken(`${API_URL}/users/${id}`, {
+    method: 'DELETE',
+  });
+};
