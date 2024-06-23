@@ -11,7 +11,11 @@ const authMiddleware = require('./middlewares/authMiddleware');
 
 const app = express();
 
-app.use(cors())
+const corsOptions = {
+  origin: 'http://localhost:9000',  // Разрешаем запросы с этого домена
+  credentials: true,  // Разрешаем передачу куки
+};
+app.use(cors(corsOptions))
 app.use(bodyParser.json());
 app.use(cookieParser());
 

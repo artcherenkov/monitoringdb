@@ -21,6 +21,23 @@ const authController = {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   },
+
+  checkAuth: (req, res) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+
+    jwt.verify(token, jwtConfig.secret, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      res.status(200).json({ message: 'Authenticated' });
+    });
+  },
+
   logout: (req, res) => {
     res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });

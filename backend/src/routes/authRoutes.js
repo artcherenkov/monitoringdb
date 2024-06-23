@@ -3,6 +3,7 @@ const authController = require('../controllers/authController');
 const router = express.Router();
 
 router.post('/login', authController.login);
+router.get('/check', authController.checkAuth);  // Добавляем новый маршрут
 router.post('/logout', authController.logout);
 
 module.exports = router;
