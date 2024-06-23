@@ -74,3 +74,19 @@ export const deleteUser = async (id) => {
     method: 'DELETE',
   });
 };
+
+export const createCamera = async (camera) => {
+  return fetchWithToken(`${API_URL}/cameras`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(camera),
+  });
+};
+
+export const deleteCamera = async (id) => {
+  return fetchWithToken(`${API_URL}/cameras/${id}`, {
+    method: 'DELETE',
+  });
+};
