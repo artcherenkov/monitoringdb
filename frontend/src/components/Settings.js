@@ -36,8 +36,9 @@ class Settings {
 
   handleCreateSetting(event) {
     event.preventDefault();
-    const param = this.element.querySelector('#new-setting-param').value;
-    const value = this.element.querySelector('#new-setting-value').value;
+    const form = event.target;
+    const param = form.querySelector('#new-setting-param').value;
+    const value = form.querySelector('#new-setting-value').value;
 
     createSetting({ param, value }).then(() => {
       this.fetchSettings();

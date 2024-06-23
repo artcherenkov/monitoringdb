@@ -2,8 +2,8 @@ const db = require('../config/dbConfig');
 
 const Event = {
   create: async (eventLevel, comment) => {
-    const [result] = await db.query('INSERT INTO events (event_level, comment) VALUES (?, ?)', [eventLevel, comment]);
-    return { id: result.insertId, eventLevel, comment };
+    const [result] = await db.query('CALL add_event(?, ?)', [eventLevel, comment]);
+    return { id: result[0][0].id, eventLevel, comment };
   },
   findAll: async () => {
     const [rows] = await db.query('SELECT id, event_level AS eventLevel, comment FROM events');
@@ -14,11 +14,11 @@ const Event = {
     return rows[0];
   },
   update: async (id, eventLevel, comment) => {
-    const [result] = await db.query('UPDATE events SET event_level = ?, comment = ? WHERE id = ?', [eventLevel, comment, id]);
+    const [result] = await db.query('CALL update_event(?, ?, ?)', [id, eventLevel, comment]);
     return { id, eventLevel, comment };
   },
   delete: async (id) => {
-    await db.query('DELETE FROM events WHERE id = ?', [id]);
+    await db.query('CALL delete_event(?)', [id]);
     return { id };
   },
 };

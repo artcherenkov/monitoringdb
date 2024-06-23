@@ -2,8 +2,8 @@ const db = require('../config/dbConfig');
 
 const Setting = {
   create: async (param, value) => {
-    const [result] = await db.query('INSERT INTO settings (param, value) VALUES (?, ?)', [param, value]);
-    return { id: result.insertId, param, value };
+    const [result] = await db.query('CALL add_setting(?, ?)', [param, value]);
+    return { id: result[0][0].id, param, value };
   },
   findAll: async () => {
     const [rows] = await db.query('SELECT id, param, value FROM settings');
@@ -14,11 +14,11 @@ const Setting = {
     return rows[0];
   },
   update: async (id, param, value) => {
-    const [result] = await db.query('UPDATE settings SET param = ?, value = ? WHERE id = ?', [param, value, id]);
+    const [result] = await db.query('CALL update_setting(?, ?, ?)', [id, param, value]);
     return { id, param, value };
   },
   delete: async (id) => {
-    await db.query('DELETE FROM settings WHERE id = ?', [id]);
+    await db.query('CALL delete_setting(?)', [id]);
     return { id };
   },
 };
